@@ -106,7 +106,7 @@ export class AppComponent implements OnInit {
   }
   
   getPokemons() {
-    this.pokemons = range(1, 100)
+    this.pokemons = range(1, 210)
     .pipe(
       map(id => {
         return this
