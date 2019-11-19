@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { from, Observable, forkJoin, range } from 'rxjs';
 
 import { mergeMap, map, concatMap, tap, catchError, bufferCount, scan, shareReplay } from 'rxjs/operators'
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -12,15 +13,15 @@ import { mergeMap, map, concatMap, tap, catchError, bufferCount, scan, shareRepl
 })
 
 export class AppComponent implements OnInit {
-  title = 'pokeapi-front-end';
+  title: string = 'PokéInfo';
 
-  url = 'https://pokeapi.co/api/v2/';
+  url: string = 'https://pokeapi.co/api/v2/';
   
   pokemons: Observable<any>;
-
-  types: Observable<any>;
   
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient, private titleService: Title) {
+    this.titleService.setTitle(this.title);
+  }
 
   ngOnInit(): void {
     this.getPokemons();
@@ -28,19 +29,11 @@ export class AppComponent implements OnInit {
     this.pokemons = this
     .pokemons
     .pipe(
-      map(pokemon => pokemon.sort(this.sortAscending))
+      map(pokemon => pokemon.sort(this.orderByAscending))
     );
-
-    this.getTypes();
   }
   
-  /*orderBy(type, a, b) {
-    if(type === 2)
-      return b - a;
-    return a - b;
-  }*/
-  
-  sortAscending(a, b) {
+  orderByAscending(a, b) {
     if(a.name < b.name)
       return -1;
     if(a.name > b.name)
@@ -48,28 +41,47 @@ export class AppComponent implements OnInit {
     return 0;
   }
 
-  sortDescending(a, b) {
+  orderByDescending(a, b) {
     if(a.name < b.name)
       return 1;
     if(a.name > b.name)
       return -1;
     return 0;
   }
-  
-  selectChanged(e) {
-    //this.getPokemons();
-    
+
+  search(event) {
     this.pokemons = this
     .pokemons
     .pipe(
       map(pokemon => {
-        if(e.target.value === '2')
-          return pokemon.sort(this.sortDescending);
-        return pokemon.sort(this.sortAscending);
+        return pokemon.filter(pokemon => {
+          return pokemon.name.toLowerCase().includes(event.target.value.toLowerCase());
+        });
       })
     );
+    
+    //console.log(event.target.value);
+  }
+  
+  selectChanged(event) {
+    if(event.target.id === 'name') {
+      this.selectNameChanged(event);
+    }
+    if(event.target.id === 'types') {
+      this.selectTypesChanged(event);
+    }
+  }
 
-    console.log(e.target.value);
+  selectNameChanged(event) {
+    this.pokemons = this
+    .pokemons
+    .pipe(
+      map(pokemon => {
+        if(event.target.value === 'descending')
+          return pokemon.sort(this.orderByDescending);
+        return pokemon.sort(this.orderByAscending);
+      })
+    );
   }
 
   selectTypesChanged(event) {
@@ -78,11 +90,11 @@ export class AppComponent implements OnInit {
     .pipe(
       map(pokemon => {
         return pokemon.filter(pokemon => {
-          //console.log(pokemon.types);
-          
+          if(event.target.value === 'default')
+            return true;
+            
           for(let i = 0; i < pokemon.types.length; i++) {
-            //console.log(pokemon.types[i].type.name);
-            if(pokemon.types[i].type.name === event.target.value) {
+            if(event.target.value === pokemon.types[i].type.name) {
               return true;
             }
           }
@@ -113,19 +125,7 @@ export class AppComponent implements OnInit {
       shareReplay()
     );
   }
-
-  getTypes() {
-    this.types = this
-    .httpClient
-    .get(`${this.url}type/`)
-    .pipe(
-      map((types) => {
-        //console.log(types['results']);
-        return types['results'];
-      })
-    );
-  }
-
+  
   //getPokemon() {}
 
   //getPokemonDetails() {}

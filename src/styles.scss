@@ -1,1 +1,91 @@
 /* You can add global styles to this file, and also import other style files */
+html, body {
+    font-family: 'Exo 2', sans-serif;
+}
+
+.btn-group-xs > .btn, .btn-xs {
+    padding: .25rem .4rem;
+    font-size: .875rem;
+    line-height: .5;
+    border-radius: .2rem;
+}
+
+.badge-primary {
+    color: #fff;
+}
+
+.type-normal {
+    background: #a8a878 linear-gradient(180deg, #a8a878 50%, #a8a878 50%) repeat scroll 0 0;
+}
+
+.type-fighting {
+    background: #d56723 linear-gradient(180deg, #d56723 50%, #d56723 50%) repeat scroll 0 0;
+}
+
+.type-flying {
+    background: #3dc7ef linear-gradient(180deg, #3dc7ef 50%, #3dc7ef 50%) repeat scroll 0 0;
+}
+
+.type-poison {
+    background: #b97fc9 linear-gradient(180deg, #b97fc9 50%, #b97fc9 50%) repeat scroll 0 0;
+}
+
+.type-ground {
+    background: #f7de3f linear-gradient(180deg, #d4a82f 50%, #d4a82f 50%) repeat scroll 0 0;
+}
+
+.type-rock {
+    background: #a38c21 linear-gradient(180deg, #a38c21 50%, #a38c21 50%) repeat scroll 0 0;
+}
+
+.type-bug {
+    background: #729f3f linear-gradient(180deg, #729f3f 50%, #729f3f 50%) repeat scroll 0 0;
+}
+
+.type-ghost {
+    background: #7b62a3 linear-gradient(180deg, #7b62a3 50%, #7b62a3 50%) repeat scroll 0 0;
+}
+
+.type-steel {
+    background: #9eb7b8 linear-gradient(180deg, #9eb7b8 50%, #9eb7b8 50%) repeat scroll 0 0;
+}
+
+.type-fire {
+    background: #fd7d24 linear-gradient(180deg, #fd7d24 50%, #fd7d24 50%) repeat scroll 0 0;
+}
+
+.type-water {
+    background: #4592c4 linear-gradient(180deg, #4592c4 50%, #4592c4 50%) repeat scroll 0 0;
+}
+
+.type-grass {
+    background: #9bcc50 linear-gradient(180deg, #9bcc50 50%, #9bcc50 50%) repeat scroll 0 0;
+}
+
+.type-electric {
+    background: #eed535 linear-gradient(180deg, #eed535 50%, #eed535 50%) repeat scroll 0 0;
+}
+
+.type-psychic {
+    background: #f366b9 linear-gradient(180deg, #f366b9 50%, #f366b9 50%) repeat scroll 0 0;
+}
+
+.type-ice {
+    background: #98d8d8 linear-gradient(180deg, #98d8d8 50%, #98d8d8 50%) repeat scroll 0 0;
+}
+
+.type-dragon {
+    background: #7038f8 linear-gradient(180deg, #7038f8 50%, #7038f8 50%) repeat scroll 0 0;
+}
+
+.type-dark {
+    background: #707070 linear-gradient(180deg, #707070 50%, #707070 50%) repeat scroll 0 0;
+}
+
+.type-fairy {
+    background: #fdb9e9 linear-gradient(180deg, #fdb9e9 50%, #fdb9e9 50%) repeat scroll 0 0;
+}
+
+//.type-unknown {}
+
+//.type-shadow {}

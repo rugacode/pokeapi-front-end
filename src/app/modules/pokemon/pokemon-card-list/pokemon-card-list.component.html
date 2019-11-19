@@ -1,0 +1,70 @@
+<div class="card" style="width: 18rem; box-shadow: 0 2px 2px rgba(0, 0, 0, .2);">
+  
+  <img class="mx-auto" src="../assets/pokeload.gif" [hidden]="show" style="height: 96px; width: 96px;">
+  <img class="mx-auto" [src]="pokemon.sprites.front_default" [hidden]="!show" (load)="onImageLoad()">
+  
+  <div class="card-body">
+    
+    <h5 class="card-title">
+      <div class="d-flex justify-content-center">
+        <strong>#{{ pokemon.id }}</strong>
+      </div>
+      <div class="d-flex justify-content-center">
+        <strong>{{ pokemon.name | titlecase }}</strong>
+      </div>
+    </h5>
+    
+    <hr>
+    
+    <div class="row text-center">
+      <div class="col">
+        <strong>Weight</strong>
+      </div>
+      <div class="col">
+        <strong>Height</strong>
+      </div>
+      <div class="w-100"></div>
+      <div class="col">{{ pokemon.weight }}</div>
+      <div class="col">{{ pokemon.height }}</div>
+    </div>
+    
+    <hr>
+    
+    <div class="row text-center">
+      <div class="col" *ngFor="let type of pokemon.types">
+        <span class="badge badge-primary type-{{ type.type.name }}">
+          <strong>{{ type.type.name | titlecase }}</strong>
+        </span>
+      </div>
+    </div>
+    
+    <hr>
+    
+    <div class="row text-center">
+      <div class="col">
+        <strong>Base Experience</strong>
+      </div>
+      <div class="col">
+        <strong>Order</strong>
+      </div>
+      <div class="w-100"></div>
+      <div class="col">{{ pokemon.base_experience }}</div>
+      <div class="col">{{ pokemon.order }}</div>
+    </div>
+    
+    <hr>
+    
+    <div class="row text-center">
+      <div class="col">
+        <button class="btn btn-success btn-xs">Abilities</button>
+      </div>
+      <div class="col">
+        <button class="btn btn-secondary btn-xs">Species</button>
+      </div>
+      <div class="w-100"></div>
+      <div class="col">
+        <button class="btn btn-info btn-xs">Stats</button>
+      </div>
+    </div>
+  </div>
+</div>

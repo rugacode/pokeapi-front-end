@@ -1,78 +1,35 @@
-<nav class="navbar navbar-light bg-light">
-  <a class="navbar-brand" href="#">
-    <!--<img src="/docs/4.3/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt="">-->
-    Pokemon
-  </a>
-</nav>
+<app-header></app-header>
 
-<div class="sticky-top">
-  <div class="pos-f-t">
-
-    <div class="collapse" id="navbarToggleExternalContent">
-      <div class="bg-dark p-4">
-        <h5 class="text-white h4">Collapsed content</h5>
-        <!--<span class="text-muted">Toggleable via the navbar brand.</span>-->
-        
-        <div class="input-group mb-3">
-
-          <div class="input-group-prepend">
-            <label class="input-group-text" for="inputGroupSelect01">Order Name By</label>
-          </div>
-          
-          <select class="custom-select" id="inputGroupSelect01" (change)="selectChanged($event)">
-            <option selected>Choose...</option>
-            <option value="1">Ascending Order</option>
-            <option value="2">Descending Order</option>
-          </select>
-        </div>
-
-          <select class="custom-select" id="i" (change)="selectTypesChanged($event)">
-            <option selected>Choose...</option>
-            <option *ngFor="let type of types | async" value="{{ type.name }}">{{ type.name | titlecase }}</option>
-            <!--<option value="2">Descending Order</option>-->
-          </select>
-          
-          <!--<div *ngFor="let type of types | async">
-            {{ type }}
-          </div>-->
-      </div>
-    </div>
-    
-    <nav class="navbar navbar-dark bg-dark">
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-    </nav>
-  
-  </div>
-</div>
+<app-pokemon-sticky-top (onKeyPress)="search($event)" (onChange)="selectChanged($event)"></app-pokemon-sticky-top>
 
 <div class="container">
   <div class="row">
-    
-<div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3 mt-4 ol d-flex justify-content-center" *ngFor="let pokemon of pokemons | async">
-  <div class="card" style="width: 18rem; box-shadow: 0 2px 2px rgba(0,0,0,.2);">
-    <img src="{{ pokemon.sprites.front_default }}" class="card-img-top" alt="...">
-    <div class="card-body">
-      <h5 class="card-title">{{ pokemon.name | titlecase }}</h5>
-      
-      <div class="">
-        <ng-container *ngFor="let type of pokemon.types">
-        <span class="badge badge-primary col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">{{ type.type.name | titlecase }}</span><br>
-        </ng-container>
-      </div>
+    <app-pokemon-card-list class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3 mt-4 ol d-flex justify-content-center" *ngFor="let pokemon of pokemons | async" [pokemon]="pokemon"></app-pokemon-card-list>
+  </div>
+</div>
 
-      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-      <a href="#" class="btn btn-primary">Go somewhere</a>
+<!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal">
+  Launch demo modal
+</button>-->
+
+<div class="modal" tabindex="-1" role="dialog" id="modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Modal body text goes here.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
     </div>
   </div>
 </div>
 
-  </div>
-</div>
-
-<footer class="page-footer font-small blue">
-  <div class="footer-copyright text-center py-3">
-    <a href=""> </a>
-  </div>
-</footer>
+<app-footer></app-footer>
