@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 
-import { from, Observable, forkJoin, range } from 'rxjs';
+import { Observable } from 'rxjs';
 
-import { mergeMap, map, concatMap, tap, catchError, bufferCount, scan, shareReplay } from 'rxjs/operators'
 import { Title } from '@angular/platform-browser';
+
+import { PokemonService } from './services/pokemon.service';
 
 @Component({
   selector: 'app-root',
@@ -14,53 +14,25 @@ import { Title } from '@angular/platform-browser';
 
 export class AppComponent implements OnInit {
   title: string = 'PokéInfo';
-
-  url: string = 'https://pokeapi.co/api/v2/';
   
   pokemons: Observable<any>;
   
-  constructor(private httpClient: HttpClient, private titleService: Title) {
+  constructor(private titleService: Title, private pokemonService: PokemonService) {
     this.titleService.setTitle(this.title);
   }
 
   ngOnInit(): void {
     this.getPokemons();
 
-    this.pokemons = this
-    .pokemons
-    .pipe(
-      map(pokemon => pokemon.sort(this.orderByAscending))
-    );
+    this.pokemons = this.pokemonService.ascending(this.pokemons);
   }
   
-  orderByAscending(a, b) {
-    if(a.name < b.name)
-      return -1;
-    if(a.name > b.name)
-      return 1;
-    return 0;
+  getPokemons() {
+    this.pokemons = this.pokemonService.getPokemons();
   }
-
-  orderByDescending(a, b) {
-    if(a.name < b.name)
-      return 1;
-    if(a.name > b.name)
-      return -1;
-    return 0;
-  }
-
+  
   search(event) {
-    this.pokemons = this
-    .pokemons
-    .pipe(
-      map(pokemon => {
-        return pokemon.filter(pokemon => {
-          return pokemon.name.toLowerCase().includes(event.target.value.toLowerCase());
-        });
-      })
-    );
-    
-    //console.log(event.target.value);
+    this.pokemons = this.pokemonService.search(this.pokemons, event);
   }
   
   selectChanged(event) {
@@ -71,62 +43,18 @@ export class AppComponent implements OnInit {
       this.selectTypesChanged(event);
     }
   }
-
+  
   selectNameChanged(event) {
-    this.pokemons = this
-    .pokemons
-    .pipe(
-      map(pokemon => {
-        if(event.target.value === 'descending')
-          return pokemon.sort(this.orderByDescending);
-        return pokemon.sort(this.orderByAscending);
-      })
-    );
+    this.pokemons = this.pokemonService.selectNameChanged(this.pokemons, event);
   }
 
   selectTypesChanged(event) {
-    this.pokemons = this
-    .pokemons
-    .pipe(
-      map(pokemon => {
-        return pokemon.filter(pokemon => {
-          if(event.target.value === 'default')
-            return true;
-            
-          for(let i = 0; i < pokemon.types.length; i++) {
-            if(event.target.value === pokemon.types[i].type.name) {
-              return true;
-            }
-          }
-          
-          return false;
-        });
-      })
-    );
+    this.pokemons = this.pokemonService.selectTypesChanged(this.pokemons, event);
   }
   
-  getPokemons() {
-    this.pokemons = range(1, 210)
-    .pipe(
-      map(id => {
-        return this
-        .httpClient
-        .get(`${this.url}pokemon/${id}/`)
-      }),
-      bufferCount(20),
-      concatMap(
-        res => forkJoin(res)
-      ),
-      scan((acc, curr) => {
-        acc.push(...curr);
-        
-        return acc;
-      }, []),
-      shareReplay()
-    );
-  }
+  public clickedAbilitiesEvent;
   
-  //getPokemon() {}
-
-  //getPokemonDetails() {}
+  childAbilitiesEventClicked(event) {
+    this.clickedAbilitiesEvent = event;
+  }
 }

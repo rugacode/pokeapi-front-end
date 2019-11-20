@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-pokemon-card-list',
@@ -9,6 +9,13 @@ import { Component, OnInit, Input } from '@angular/core';
 export class PokemonCardListComponent implements OnInit {
   @Input()
   pokemon;
+  
+  @Output()
+  abilitiesEventClicked = new EventEmitter<Event>();
+  
+  onAbilitiesClick(event: Event): void {
+    this.abilitiesEventClicked.emit(this.pokemon);
+  }
   
   show: boolean = false;
   

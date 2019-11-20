@@ -1,7 +1,8 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+
+import { TypesService } from '../../../services/types.service';
 
 @Component({
   selector: 'app-pokemon-sticky-top',
@@ -24,25 +25,15 @@ export class PokemonStickyTopComponent implements OnInit {
     this.onChange.emit(event);
   }
   
-  url: string = 'https://pokeapi.co/api/v2/';
-
   types: Observable<any>;
   
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private typesService: TypesService) {
     this.getTypes();
   }
   
   ngOnInit() {}
 
   getTypes() {
-    this.types = this
-    .httpClient
-    .get(`${this.url}type/`)
-    .pipe(
-      map((types) => {
-        //console.log(types['results']);
-        return types['results'];
-      })
-    );
+    this.types = this.typesService.getTypes();
   }
 }
