@@ -10,6 +10,8 @@ import { PokemonCardListComponent } from './modules/pokemon/pokemon-card-list/po
 import { PokemonStickyTopComponent } from './modules/pokemon/pokemon-sticky-top/pokemon-sticky-top.component';
 import { PokemonAbilitiesModalComponent } from './modules/pokemon/pokemon-abilities-modal/pokemon-abilities-modal.component';
 
+import { PokemonsService } from './services/pokemons.service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,7 +25,7 @@ import { PokemonAbilitiesModalComponent } from './modules/pokemon/pokemon-abilit
     BrowserModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [PokemonsService],
   bootstrap: [AppComponent]
 })
 

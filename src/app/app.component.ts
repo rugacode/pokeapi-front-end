@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-
-import { Observable } from 'rxjs';
-
 import { Title } from '@angular/platform-browser';
+import { Observable, BehaviorSubject } from 'rxjs';
 
-import { PokemonService } from './services/pokemon.service';
+import { PokemonsService } from './services/pokemons.service';
 
 @Component({
   selector: 'app-root',
@@ -15,24 +13,60 @@ import { PokemonService } from './services/pokemon.service';
 export class AppComponent implements OnInit {
   title: string = 'PokéInfo';
   
-  pokemons: Observable<any>;
+  pokemons$ = new Observable<any[]>();
   
-  constructor(private titleService: Title, private pokemonService: PokemonService) {
+  subjects$ = new BehaviorSubject<any[]>([]);
+  
+  intersectionObserver: IntersectionObserver;
+  
+  constructor(
+    private titleService: Title,
+    private pokemonsService: PokemonsService
+  ) {
     this.titleService.setTitle(this.title);
   }
-
-  ngOnInit(): void {
-    this.getPokemons();
-
-    this.pokemons = this.pokemonService.ascending(this.pokemons);
-  }
   
-  getPokemons() {
-    this.pokemons = this.pokemonService.getPokemons();
+  ngOnInit(): void {
+    this.pokemons$ = this.subjects$.asObservable();
+    
+    this
+    .pokemonsService
+    .getPokemons()
+    .subscribe(pokemons => {
+      this.subjects$.next(pokemons);
+    });
+    
+    const footer = document.querySelector('app-footer');
+    
+    this.intersectionObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting && this.pokemonsService.url !== null) {
+          
+          this
+          .pokemonsService
+          .getPokemons()
+          .subscribe(previousPokemons => {
+            
+            this
+            .pokemonsService
+            .getNextPokemons(this.subjects$)
+            .subscribe((nextPokemons) => {
+              nextPokemons.push(...previousPokemons);
+              
+              this.subjects$.next(nextPokemons);
+            });
+          
+          });
+          
+        }
+      });
+    });
+    
+    this.intersectionObserver.observe(footer);
   }
   
   search(event) {
-    this.pokemons = this.pokemonService.search(this.pokemons, event);
+    this.pokemons$ = this.pokemonsService.search(this.pokemons$, event);
   }
   
   selectChanged(event) {
@@ -45,11 +79,11 @@ export class AppComponent implements OnInit {
   }
   
   selectNameChanged(event) {
-    this.pokemons = this.pokemonService.selectNameChanged(this.pokemons, event);
+    this.pokemons$ = this.pokemonsService.selectNameChanged(this.pokemons$, event);
   }
 
   selectTypesChanged(event) {
-    this.pokemons = this.pokemonService.selectTypesChanged(this.pokemons, event);
+    this.pokemons$ = this.pokemonsService.selectTypesChanged(this.pokemons$, event);
   }
   
   public clickedAbilitiesEvent;

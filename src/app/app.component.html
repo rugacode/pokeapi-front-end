@@ -4,7 +4,7 @@
 
 <div class="container">
   <div class="row">
-    <app-pokemon-card-list class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3 mt-4 ol d-flex justify-content-center" *ngFor="let pokemon of pokemons | async" [pokemon]="pokemon" (abilitiesEventClicked)="childAbilitiesEventClicked($event)"></app-pokemon-card-list>
+    <app-pokemon-card-list class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3 mt-4 ol d-flex justify-content-center" *ngFor="let pokemon of pokemons$ | async" [pokemon]="pokemon" (abilitiesEventClicked)="childAbilitiesEventClicked($event)"></app-pokemon-card-list>
   </div>
 </div>
 

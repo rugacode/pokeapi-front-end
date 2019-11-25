@@ -16,24 +16,22 @@ export class PokemonAbilitiesModalComponent implements OnInit {
 
   @Input()
   set abilitiesEvent(pokemon) {
-    //console.log(pokemon);
     this.pokemon = pokemon;
-
+    
     if(pokemon)
       this.getPokemonAbilities();
   }
   
-  constructor(private httpClient: HttpClient) {}
+  constructor(
+    private httpClient: HttpClient
+  ) {}
   
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   getPokemonAbilities() {
-    //console.log(this.pokemon['abilities']);
     this.pokemonAbilities = from(this.pokemon['abilities'])
     .pipe(
       mergeMap(ability => {
-        //console.log(ability['ability']['url']);
         return this
         .httpClient
         .get(ability['ability']['url'])
@@ -42,10 +40,8 @@ export class PokemonAbilitiesModalComponent implements OnInit {
             return empty();
           })
         );
-        //return ability;
       }),
       toArray()
-    )
-    ;
+    );
   }
 }
